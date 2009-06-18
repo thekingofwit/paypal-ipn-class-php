@@ -24,4 +24,4 @@ $p->ipn_status //get the ipn validation status detial.
 }}}
 
 =Paypal Manual=
-[https://www.paypalobjects.com/WEBSCR-580-20090616-1/en_US/pdf/PP_OrderManagement_IntegrationGuide.pdf Instant Payment Notification (IPN) Manual]
+[https://www.paypalobjects.com/WEBSCR-580-20090616-1/en_US/pdf/PP_OrderManagement_IntegrationGuide.pdf Instant Payment Notification (IPN) Manual]This gives you all the information you need including the fields you can pass to paypal (using add_field() with this class) as well as all the fields that are returned in an IPN post (stored in the ipn_data() array in this class).  It also diagrams the entire transaction process.
