@@ -22,3 +22,6 @@ if ($p->validate_ipn()) {
 }
 $p->ipn_status //get the ipn validation status detial.
 }}}
+
+=Paypal Manual=
+[https://www.paypalobjects.com/WEBSCR-580-20090616-1/en_US/pdf/PP_OrderManagement_IntegrationGuide.pdf Instant Payment Notification (IPN) Manual]
