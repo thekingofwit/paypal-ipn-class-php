@@ -12,46 +12,55 @@
  *  returns a user to upon canceling an order, and finally, it's the page that
  *  handles the IPN request from Paypal.
  *
+ *	If you want submit a payment form to Paypal sandbox. Please add the 
+ *	_GET[sandbox=1] parameter to link. ie: paypal.php?sandbox=1.
+ *	
  *  I tried to comment this file, aswell as the acutall class file, as well as
  *  I possibly could.  Please email me with questions, comments, and suggestions.
  *  See the header of paypal.class.php for additional resources and information.
 */
 
+define('EMAIL_ADD', 'YOUR EMAIL ADDRESS HERE'); // For system notification.
+define('PAYPAL_EMAIL_ADD', 'YOUR PAYPAL OR SANDBOX EMAIL ADDRESS HERE');
+
 // Setup class
-require_once('paypal.class.php');  // include the class file
-$p = new paypal_class(false);             // initiate an instance of the class. true:sandbox false:live use
+require_once('paypal_class.php');  // include the class file
+$p = new paypal_class( ); 				 // initiate an instance of the class.
+$p -> admin_mail = EMAIL_ADD;           
             
-// setup a variable for this script (ie: 'http://www.ericbess.com/paypal.php')
-$this_script = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-
-// if there is not action variable, set the default action of 'process'
-if (empty($_GET['action'])) $_GET['action'] = 'process';  
-
-$p->add_field('business', 'YOUR PAYPAL (OR SANDBOX) EMAIL ADDRESS HERE!');
-$p->add_field('return', $this_script.'?action=success');
-$p->add_field('cancel_return', $this_script.'?action=cancel');
-$p->add_field('notify_url', $this_script.'?action=ipn');
-$p->add_field('item_name', 'Paypal Test Transaction');
-$p->add_field('amount', '1.99');
-
 switch ($_GET['action']) {
     
-   case 'process':      // Process and order...
+   default:      // Process and order...
 
       // There should be no output at this point.  To process the POST data,
       // the submit_paypal_post() function will output all the HTML tags which
       // contains a FORM which is submited instantaneously using the BODY onload
       // attribute.  In other words, don't echo or printf anything when you're
       // going to be calling the submit_paypal_post() function.
+      
+      // adds or edits a "$p->add_field(key, value);" in following, which is what will be
+	 		// sent to paypal as POST variables. Refer to PayPal HTML Variables:
+	 		// https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables
  
       // This is where you would have your form validation  and all that jazz.
       // You would take your POST vars and load them into the class like below,
       // only using the POST values instead of constant string expressions.
+      
+      // setup a current URL variable for this script
+			$this_script = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+      
+      $p->add_field('business', PAYPAL_EMAIL_ADD);
+			$p->add_field('return', $this_script.'?action=success');
+			$p->add_field('cancel_return', $this_script.'?action=cancel');
+			$p->add_field('notify_url', $this_script.'?action=ipn');
+			$p->add_field('item_name', 'Paypal Test Transaction');
+			$p->add_field('cmd', '_donations');
+			$p->add_field('rm', '2');	// Return method = POST
  
       $p->submit_paypal_post(); // submit the fields to paypal
       $p->dump_fields();      // for debugging, output a table of all the fields
       break;
-      
+   
    case 'success':      // Order was successful...
    
       // This is where you would probably want to thank the user for their order
@@ -103,21 +112,15 @@ switch ($_GET['action']) {
          // in the ipn_data() array.
   
          // For this example, we'll just email ourselves ALL the data.
-         $subject = 'Instant Payment Notification - Recieved Payment';
-         $to = 'YOUR EMAIL ADDRESS HERE';    //  your email
-         $body =  "An instant payment notification was successfully recieved\n";
-         $body .= "from ".$p->ipn_data['payer_email']." on ".date('m/d/Y');
-         $body .= " at ".date('g:i A')."\n\nDetails:\n";
-         
-         foreach ($p->ipn_data as $key => $value) { $body .= "\n$key: $value"; }
-         mail($to, $subject, $body);
+				 $subject = 'Instant Payment Notification - Recieved Payment';
+				 $p->send_report ( $subject );
       } else {
-      	 $subject = 'Instant Payment Notification - Payment Fail';
-         $to = 'YOUR EMAIL ADDRESS HERE';    //  your email
-         $body =  "An instant payment notification was failed, the fail reson is ".$p->ipn_status."\n";
-         mail($to, $subject, $body);
+				 $subject = 'Instant Payment Notification - Payment Fail';
+			 	 $p->send_report ( $subject );
     	}
       break;
  }     
+
+
 
 ?>
