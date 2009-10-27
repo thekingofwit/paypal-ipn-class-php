@@ -1,7 +1,7 @@
 #labels paypal
 = Introduction =
 
-This package provides neat and simple method to validate the paid result with [https://www.paypal.com/ipn Paypal IPN]. It's NOT intended to make the paypal integration "plug 'n' play". It still requires the developer to understand the [https://www.paypal.com/cgi-bin/webscr?cmd=p/dmo/demo_ipn_1-outside Paypal Process] and know the [https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables HTML Variables] you want/need to pass to paypal to achieve what you want.
+This package provides neat and simple method to validate the paid result with [https://www.paypal.com/ipn Paypal IPN]. It's NOT intended to make the paypal integration "plug 'n' play". It still requires the developer to understand the [https://www.paypal.com/cgi-bin/webscr?cmd=p/dmo/demo_ipn_1-outside Paypal Process] and know the [https://cms.paypal.com/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables HTML Variables] you want/need to pass to paypal to achieve what you want.
 
 = Details =
 
@@ -24,8 +24,8 @@ $p->ipn_status //get the ipn validation status detial.
 }}}
 
 =Paypal Manual=
-[https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/howto_html_landing Integrating Using HTML]: How to integrate Paypal using simple html and receive messages when payments are made on your website or e-commerce solution using IPN. 
+[https://cms.paypal.com/cgi-bin/?cmd=_render-content&content_ID=developer/howto_html_landing Integrating Using HTML]: How to integrate Paypal using simple html and receive messages when payments are made on your website or e-commerce solution using IPN. 
 
 [https://www.paypalobjects.com/WEBSCR-580-20090616-1/en_US/pdf/PP_OrderManagement_IntegrationGuide.pdf Instant Payment Notification (IPN) Manual]: This gives you all the information you need including the fields you can pass to paypal (using add_field() with this class) as well as all the fields that are returned in an IPN post (stored in the ipn_data() array in this class).  It also diagrams the entire transaction process.
 
-[https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables IPN Variables]: Paypal returns related variables for each kind of IPN or PDT message. 
+[https://cms.paypal.com/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables IPN Variables]: Paypal returns related variables for each kind of IPN or PDT message. 
