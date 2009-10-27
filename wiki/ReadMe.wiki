@@ -26,6 +26,6 @@ $p->ipn_status //get the ipn validation status detial.
 =Paypal Manual=
 [https://cms.paypal.com/cgi-bin/?cmd=_render-content&content_ID=developer/howto_html_landing Integrating Using HTML]: How to integrate Paypal using simple html and receive messages when payments are made on your website or e-commerce solution using IPN. 
 
-[https://www.paypalobjects.com/WEBSCR-580-20090616-1/en_US/pdf/PP_OrderManagement_IntegrationGuide.pdf Instant Payment Notification (IPN) Manual]: This gives you all the information you need including the fields you can pass to paypal (using add_field() with this class) as well as all the fields that are returned in an IPN post (stored in the ipn_data() array in this class).  It also diagrams the entire transaction process.
+[https://cms.paypal.com/cms_content/en_US/files/developer/PP_OrderMgmt_IntegrationGuide.pdf Instant Payment Notification (IPN) Manual]: This gives you all the information you need including the fields you can pass to paypal (using add_field() with this class) as well as all the fields that are returned in an IPN post (stored in the ipn_data() array in this class).  It also diagrams the entire transaction process.
 
 [https://cms.paypal.com/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables IPN Variables]: Paypal returns related variables for each kind of IPN or PDT message. 
