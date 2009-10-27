@@ -9,7 +9,7 @@ To submit an order to paypal, have your order form POST to a file with:
 {{{
 $p = new paypal_class;
 $p->add_field('business', 'somebody@domain.com');
-$p->add_field('first_name', $_POST['first_name']);
+$p->add_field('field_name', 'field_value']);
 //....add all your fields in the same manor
 $p->submit_paypal_post();
 }}}
@@ -18,9 +18,11 @@ To process an IPN, have your IPN processing file contain:
 {{{
 $p = new paypal_class;
 if ($p->validate_ipn()) {
-	//....IPN is verified.  Details are in the ipn_data() array
+	//....IPN is verified.  IPN POST Details are in the ipn_data() array
 }
-$p->ipn_status //get the ipn validation status detial.
+$p->send_report($subject);
+$p->print_report(); 
+//print and send the ipn validation status detial.
 }}}
 
 =Paypal Manual=
