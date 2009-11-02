@@ -21,19 +21,24 @@ define('SSL_SAND_URL','https://www.sandbox.paypal.com/cgi-bin/webscr');
 
 class paypal_class {
 	
-	private $ipn_status;                // holds the last status.
-	public $admin_mail; 								// receive the ipn status report pre transaction.
+	private $ipn_status;                // holds the last status
+	public $admin_mail; 				// receive the ipn status report pre transaction
+	public $paypal_mail;				// paypal account, if set, class need to verify receiver
+	public $txn_id;						// array: if the txn_id array existed, class need to verified the txn_id duplicate
 	public $ipn_log;                    // bool: log IPN results to text file?
 	private $ipn_response;              // holds the IPN response from paypal   
 	public $ipn_data = array();         // array contains the POST values for IPN
 	private $fields = array();          // array holds the fields to submit to paypal
-	private $ipn_debug; 								// ipn_debug;
+	private $ipn_debug; 				// ipn_debug
 	
 	// initialization constructor.  Called when class is created.
 	function __construct() {
 
 		$this->ipn_status = '';
-		$this->admin_mail = '';
+		$this->admin_mail = null;
+		$this->paypal_mail = null;
+		$this->txn_id = null;
+		$this->tax = null;
 		$this->ipn_log = true;
 		$this->ipn_response = '';
 		$this->ipn_debug = false;
@@ -67,7 +72,7 @@ class paypal_class {
 		echo " will be redirected to the paypal website.</h2></center>\n";
 		echo "<form method=\"post\" name=\"paypal_form\" ";
 		echo "action=\"".$paypal_url."\">\n";
-		
+		if (isset($this->paypal_mail))echo "<input type=\"hidden\" name=\"business\" value=\"$this->paypal_mail\"/>\n";
 		foreach ($this->fields as $name => $value) {
 			echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 		}
@@ -88,7 +93,19 @@ class paypal_class {
 		
 		$hostname = gethostbyaddr ( $_SERVER ['REMOTE_ADDR'] );
 		if (! preg_match ( '/paypal\.com$/', $hostname )) {
-			$this->ipn_status = 'Validation isn\'t from PayPal ,Hacking Attempt';
+			$this->ipn_status = 'Validation post isn\'t from PayPal';
+			$this->log_ipn_results ( false );
+			return false;
+		}
+		
+		if (isset($this->paypal_mail) && strtolower ( $_POST['receiver_email'] ) != strtolower(trim( $this->paypal_mail ))) {
+			$this->ipn_status = "Receiver Email Not Match";
+			$this->log_ipn_results ( false );
+			return false;
+		}
+		
+		if (isset($this->txn_id)&& in_array($_POST['txn_id'],$this->txn_id)) {
+			$this->ipn_status = "txn_id have a duplicate";
 			$this->log_ipn_results ( false );
 			return false;
 		}
