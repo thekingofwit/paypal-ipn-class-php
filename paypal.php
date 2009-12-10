@@ -27,7 +27,7 @@ define('PAYPAL_EMAIL_ADD', 'YOUR PAYPAL OR SANDBOX EMAIL ADDRESS HERE');
 require_once('paypal_class.php');  // include the class file
 $p = new paypal_class( ); 				 // initiate an instance of the class.
 $p -> admin_mail = EMAIL_ADD; 
-//$p -> paypal_mail = PAYPAL_EMAIL_ADD;  // If set, class will verfy the receiver.
+//$p -> paypal_mail = PAYPAL_EMAIL_ADD;  // If set, class will verify the receiver.
             
 switch ($_GET['action']) {
     
@@ -50,7 +50,7 @@ switch ($_GET['action']) {
       // setup a current URL variable for this script
 			$this_script = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
       
-      		$p->add_field('business', PAYPAL_EMAIL_ADD); //don't need add this item. if your set the $p -> paypal_mail.
+      		$p->add_field('business', PAYPAL_EMAIL_ADD); //don't need add this item, if your set the $p -> paypal_mail.
 			$p->add_field('return', $this_script.'?action=success');
 			$p->add_field('cancel_return', $this_script.'?action=cancel');
 			$p->add_field('notify_url', $this_script.'?action=ipn');
